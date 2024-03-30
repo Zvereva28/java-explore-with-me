@@ -5,10 +5,10 @@ import org.mapstruct.Mapping;
 import org.mapstruct.factory.Mappers;
 import ru.practicum.stats.dto.EndpointHit;
 
-@Mapper
-public interface HitMapper {
+import static org.mapstruct.MappingConstants.ComponentModel.SPRING;
 
-    HitMapper INSTANCE = Mappers.getMapper(HitMapper.class);
+@Mapper(componentModel = SPRING)
+public interface HitMapper {
 
     @Mapping(source = "timestamp", target = "timestamp", dateFormat = "yyyy-MM-dd HH:mm:ss")
     EndpointHit toHitDto(Hit hit);

@@ -19,12 +19,13 @@ import java.util.stream.Collectors;
 public class HitService {
     private final Repository repository;
     private final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+    private final HitMapper hitMapper;
 
     @Transactional
     public EndpointHit createHit(EndpointHit hitDto) {
-        Hit hit = repository.save(HitMapper.INSTANCE.toHit(hitDto));
+        Hit hit = repository.save(hitMapper.toHit(hitDto));
         log.info("Новая запись о запросе: '{}'", hit);
-        return HitMapper.INSTANCE.toHitDto(hit);
+        return hitMapper.toHitDto(hit);
     }
 
     public List<ViewStats> getStats(String start, String end, Boolean unique, List<String> uris) {
