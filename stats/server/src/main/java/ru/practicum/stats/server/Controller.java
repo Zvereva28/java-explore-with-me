@@ -9,7 +9,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import ru.practicum.stats.dto.EndpointHit;
-import ru.practicum.stats.dto.MetricDTO;
+import ru.practicum.stats.dto.ViewStats;
+import ru.practicum.stats.server.service.HitService;
 
 import java.util.List;
 
@@ -26,7 +27,7 @@ public class Controller {
     }
 
     @GetMapping("/stats")
-    public ResponseEntity<List<MetricDTO>> getStats(
+    public ResponseEntity<List<ViewStats>> getStats(
             @RequestParam(name = "start") String start,
             @RequestParam(name = "end") String end,
             @RequestParam(name = "unique", defaultValue = "false", required = false) Boolean unique,

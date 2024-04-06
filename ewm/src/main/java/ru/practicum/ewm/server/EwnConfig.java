@@ -10,7 +10,7 @@ public class EwnConfig {
 
     @Bean
     public StatsClient statsClient() {
-        return new StatsClient("http://localhost:9090", new RestTemplateBuilder());
+        return new StatsClient("http://stats:9090", new RestTemplateBuilder());
     }
 }
 
