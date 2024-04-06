@@ -7,6 +7,7 @@ import lombok.Setter;
 import ru.practicum.ewm.server.exceptions.Marker;
 import ru.practicum.ewm.server.models.location.LocationDto;
 
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -42,6 +43,7 @@ public class EventDto {
 
     private Boolean requestModeration = true;
 
+    @Min(0)
     private Integer participantLimit = 0;
 
 }
