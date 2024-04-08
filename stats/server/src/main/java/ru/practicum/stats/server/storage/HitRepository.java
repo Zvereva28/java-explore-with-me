@@ -3,6 +3,7 @@ package ru.practicum.stats.server.storage;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
+import ru.practicum.stats.dto.ViewStats;
 import ru.practicum.stats.server.model.Hit;
 
 import java.time.LocalDateTime;
@@ -16,14 +17,14 @@ public interface HitRepository extends JpaRepository<Hit, Long> {
             "where h.timestamp between ?1 and ?2 " +
             "group by h.app, h.uri " +
             "order by COUNT(h.ip) desc")
-    List<Object[]> findAllByTimestampWhereUrisIsNull(LocalDateTime start, LocalDateTime end);
+    List<ViewStats> findAllByTimestampWhereUrisIsNull(LocalDateTime start, LocalDateTime end);
 
     @Query("select h.app, h.uri, COUNT(DISTINCT h.ip) " +
             "from Hit h " +
             "where h.timestamp between ?1 and ?2 " +
             "group by h.app, h.uri " +
             "order by COUNT(h.ip) desc")
-    List<Object[]> findAllByTimestampWhereUrisIsNullAndUniqueTrue(LocalDateTime start, LocalDateTime end);
+    List<ViewStats> findAllByTimestampWhereUrisIsNullAndUniqueTrue(LocalDateTime start, LocalDateTime end);
 
     @Query("select h.app, h.uri, COUNT(DISTINCT h.ip) " +
             "from Hit h " +
@@ -31,7 +32,7 @@ public interface HitRepository extends JpaRepository<Hit, Long> {
             "and h.uri IN (?3) " +
             "group by h.app, h.uri " +
             "order by COUNT(DISTINCT h.ip) desc")
-    List<Object[]> findAllByTimestampWhereUrisAndUniqueTrue(LocalDateTime start, LocalDateTime end, List<String> uris);
+    List<ViewStats> findAllByTimestampWhereUrisAndUniqueTrue(LocalDateTime start, LocalDateTime end, List<String> uris);
 
     @Query("select h.app, h.uri, COUNT(h.ip) " +
             "from Hit h " +
@@ -39,5 +40,5 @@ public interface HitRepository extends JpaRepository<Hit, Long> {
             "and h.uri IN (?3) " +
             "group by h.app, h.uri " +
             "order by COUNT(h.ip) desc")
-    List<Object[]> findAllByTimestampWhereUris(LocalDateTime start, LocalDateTime end, List<String> uris);
+    List<ViewStats> findAllByTimestampWhereUris(LocalDateTime start, LocalDateTime end, List<String> uris);
 }
