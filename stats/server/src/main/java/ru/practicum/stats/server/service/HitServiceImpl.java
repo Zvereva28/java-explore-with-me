@@ -9,13 +9,17 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import ru.practicum.stats.dto.EndpointHit;
 import ru.practicum.stats.dto.ViewStats;
+import ru.practicum.stats.server.BadRequestException;
 import ru.practicum.stats.server.mapper.HitMapper;
 import ru.practicum.stats.server.model.Hit;
 import ru.practicum.stats.server.storage.HitRepository;
 
+import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -36,13 +40,24 @@ public class HitServiceImpl implements HitService {
     @Override
     @SneakyThrows
     public List<ViewStats> getStats(String start, String end, Boolean unique, List<String> uris) {
-        LocalDateTime startDate = LocalDateTime.parse(start, formatter);
-        LocalDateTime endDate = LocalDateTime.parse(end, formatter);
+        String rangeStart = URLDecoder.decode(start, StandardCharsets.UTF_8.toString());
+        String rangeEnd = URLDecoder.decode(end, StandardCharsets.UTF_8.toString());
+
+        LocalDateTime startDate = LocalDateTime.parse(rangeStart, formatter);
+        LocalDateTime endDate = LocalDateTime.parse(rangeEnd, formatter);
+
+        if (endDate.isBefore(startDate)) {
+            throw new BadRequestException("Date and time must be correct");
+        }
         List<ViewStats> results;
         if (uris == null) {
             results = getHitsIfUrisIsNull(startDate, endDate, unique);
         } else {
-            results = getHitsIfUris(startDate, endDate, unique, uris);
+            List<String> clearUris = uris.stream()
+                    .map(s -> s.replace("[", ""))
+                    .map(s -> s.replace("]", ""))
+                    .collect(Collectors.toList());
+            results = getHitsIfUris(startDate, endDate, unique, clearUris);
         }
         log.info("Статистика для uris: '{}'", uris);
         return results;

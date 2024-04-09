@@ -24,6 +24,7 @@ import ru.practicum.ewm.server.models.event.EventFullDto;
 import ru.practicum.ewm.server.models.event.EventShortDto;
 import ru.practicum.ewm.server.models.event.EventState;
 import ru.practicum.ewm.server.models.event.SearchFilter;
+import ru.practicum.ewm.server.models.event.Stat;
 import ru.practicum.ewm.server.models.event.StateAction;
 import ru.practicum.ewm.server.models.event.UpdateEventAdminRequest;
 import ru.practicum.ewm.server.models.event.UpdateEventUserRequest;
@@ -43,7 +44,6 @@ import ru.practicum.ewm.server.storage.RequestRepository;
 import ru.practicum.ewm.server.storage.UserRepository;
 import ru.practicum.stats.client.StatsClient;
 import ru.practicum.stats.dto.EndpointHit;
-import ru.practicum.stats.dto.ViewStats;
 
 import javax.servlet.http.HttpServletRequest;
 import java.net.URLEncoder;
@@ -235,9 +235,9 @@ public class EventServiceImpl implements EventService {
         Event event = eventRepository.findByIdAndState(id, EventState.PUBLISHED)
                 .orElseThrow(() -> new NotFoundException(String.format("Event with id=%d was not found", id)));
 
-        List<ViewStats> stats = getViewStats(request);
+        List<Stat> stats = getViewStats(request);
         createHit(request);
-        List<ViewStats> newStats = getViewStats(request);
+        List<Stat> newStats = getViewStats(request);
         if (!stats.equals(newStats)) {
             event.setViews(event.getViews() + 1);
         }
@@ -247,7 +247,7 @@ public class EventServiceImpl implements EventService {
     }
 
     @SneakyThrows
-    private List<ViewStats> getViewStats(HttpServletRequest request) {
+    private List<Stat> getViewStats(HttpServletRequest request) {
 
         String rangeStart = URLEncoder.encode(
                 LocalDateTime.now().minusYears(10).withNano(0).toString(),
@@ -258,7 +258,7 @@ public class EventServiceImpl implements EventService {
 
         List<String> eventPaths = Collections.singletonList(request.getRequestURI());
 
-        return (List<ViewStats>) client.getViewStats(rangeStart, rangeEnd, true, eventPaths).getBody();
+        return (List<Stat>) client.getViewStats(rangeStart, rangeEnd, true, eventPaths).getBody();
     }
 
 
