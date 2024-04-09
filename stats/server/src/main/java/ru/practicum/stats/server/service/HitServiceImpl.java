@@ -40,6 +40,7 @@ public class HitServiceImpl implements HitService {
     @Override
     @SneakyThrows
     public List<ViewStats> getStats(String start, String end, Boolean unique, List<String> uris) {
+
         String rangeStart = URLDecoder.decode(start, StandardCharsets.UTF_8.toString());
         String rangeEnd = URLDecoder.decode(end, StandardCharsets.UTF_8.toString());
 
@@ -49,7 +50,9 @@ public class HitServiceImpl implements HitService {
         if (endDate.isBefore(startDate)) {
             throw new BadRequestException("Date and time must be correct");
         }
-        List<ViewStats> results;
+
+        List<Object[]> results;
+
         if (uris == null) {
             results = getHitsIfUrisIsNull(startDate, endDate, unique);
         } else {
@@ -59,11 +62,18 @@ public class HitServiceImpl implements HitService {
                     .collect(Collectors.toList());
             results = getHitsIfUris(startDate, endDate, unique, clearUris);
         }
-        log.info("Статистика для uris: '{}'", uris);
-        return results;
+
+        log.info("Получена статистика на uris: '{}'", uris);
+        return results.stream()
+                .map(r -> ViewStats.builder()
+                        .app((String) r[0])
+                        .uri((String) r[1])
+                        .hits((Long) r[2])
+                        .build())
+                .collect(Collectors.toList());
     }
 
-    private List<ViewStats> getHitsIfUrisIsNull(LocalDateTime start, LocalDateTime end, Boolean unique) {
+    private List<Object[]> getHitsIfUrisIsNull(LocalDateTime start, LocalDateTime end, Boolean unique) {
         if (unique) {
             return repository.findAllByTimestampWhereUrisIsNullAndUniqueTrue(start, end);
         } else {
@@ -71,7 +81,7 @@ public class HitServiceImpl implements HitService {
         }
     }
 
-    private List<ViewStats> getHitsIfUris(LocalDateTime start, LocalDateTime end, Boolean unique, List<String> uris) {
+    private List<Object[]> getHitsIfUris(LocalDateTime start, LocalDateTime end, Boolean unique, List<String> uris) {
         if (!unique) {
             return repository.findAllByTimestampWhereUris(start, end, uris);
         } else {
