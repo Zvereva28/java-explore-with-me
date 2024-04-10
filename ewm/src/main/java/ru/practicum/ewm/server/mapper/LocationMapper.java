@@ -5,10 +5,10 @@ import org.mapstruct.factory.Mappers;
 import ru.practicum.ewm.server.models.location.Location;
 import ru.practicum.ewm.server.models.location.LocationDto;
 
-@Mapper
-public interface LocationMapper {
+import static org.mapstruct.MappingConstants.ComponentModel.SPRING;
 
-    LocationMapper INSTANCE = Mappers.getMapper(LocationMapper.class);
+@Mapper(componentModel = SPRING)
+public interface LocationMapper {
 
     Location toLocation(LocationDto locationDto);
 

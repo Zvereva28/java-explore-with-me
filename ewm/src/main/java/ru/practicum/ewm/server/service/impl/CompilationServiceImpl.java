@@ -30,13 +30,15 @@ import java.util.stream.Collectors;
 public class CompilationServiceImpl implements CompilationService {
     private final CompilationRepository compilationRepository;
     private final EventRepository eventRepository;
+    private final CompilationMapper compilationMapper;
+    private final EventMapper eventMapper;
 
     @Override
     @Transactional
     public CompilationDto createCompilation(NewCompilationDto newCompilationDto) {
 
         Compilation compilation = compilationRepository
-                .save(CompilationMapper.INSTANCE.newCompilationToCompilation(newCompilationDto));
+                .save(compilationMapper.newCompilationToCompilation(newCompilationDto));
 
         log.info("Создана подборка событий - {}", newCompilationDto.getTitle());
         return setEventsToCompilationDto(compilation);
@@ -101,11 +103,11 @@ public class CompilationServiceImpl implements CompilationService {
         if (compilation.getEvents() != null) {
             List<Event> events = eventRepository.findAllByIdIn(compilation.getEvents())
                     .orElseThrow(() -> new NotFoundException("Event not found"));
-            CompilationDto compilationDto = CompilationMapper.INSTANCE.toCompilationDto(compilation);
-            compilationDto.setEvents(events.stream().map(EventMapper.INSTANCE::toEventShort).collect(Collectors.toList()));
+            CompilationDto compilationDto = compilationMapper.toCompilationDto(compilation);
+            compilationDto.setEvents(events.stream().map(eventMapper::toEventShort).collect(Collectors.toList()));
             return compilationDto;
         } else {
-            return CompilationMapper.INSTANCE.toCompilationDto(compilation);
+            return compilationMapper.toCompilationDto(compilation);
         }
     }
 }

@@ -5,10 +5,10 @@ import org.mapstruct.factory.Mappers;
 import ru.practicum.ewm.server.models.request.ParticipationRequest;
 import ru.practicum.ewm.server.models.request.ParticipationRequestDto;
 
-@Mapper
-public interface RequestMapper {
+import static org.mapstruct.MappingConstants.ComponentModel.SPRING;
 
-    RequestMapper INSTANCE = Mappers.getMapper(RequestMapper.class);
+@Mapper(componentModel = SPRING)
+public interface RequestMapper {
 
     ParticipationRequest toRequest(ParticipationRequestDto dto);
 

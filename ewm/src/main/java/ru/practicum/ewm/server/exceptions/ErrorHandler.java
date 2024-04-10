@@ -20,20 +20,6 @@ import java.util.stream.Collectors;
 public class ErrorHandler {
     private static final String PATTERN = "yyyy-MM-dd HH:mm:ss";
 
-    @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<List<ApiError>> notValidException(MethodArgumentNotValidException e) {
-        log.error(e.getMessage());
-        final List<ApiError> violations = e.getBindingResult().getFieldErrors().stream()
-                .map(error -> ApiError.builder()
-                        .message(error.getDefaultMessage())
-                        .status(HttpStatus.BAD_REQUEST)
-                        .timestamp(DateTimeFormatter.ofPattern(PATTERN).format(LocalDateTime.now()))
-                        .reason(error.getField())
-                        .build())
-                .collect(Collectors.toList());
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(violations);
-    }
-
     @ExceptionHandler(ConstraintViolationException.class)
     public ResponseEntity<List<ApiError>> handleConstraintViolationException(ConstraintViolationException e) {
         log.error(e.getMessage());
@@ -58,9 +44,7 @@ public class ErrorHandler {
                         .timestamp(DateTimeFormatter.ofPattern(PATTERN).format(LocalDateTime.now()))
                         .reason(e.getCause().toString())
                         .build());
-
     }
-
 
     @ExceptionHandler(NotFoundException.class)
     public ResponseEntity<ApiError> notFoundException(NotFoundException e) {
@@ -88,20 +72,6 @@ public class ErrorHandler {
                         .build());
     }
 
-    @ExceptionHandler(OperationConditionsException.class)
-    public ResponseEntity<ApiError> operationConditionsException(OperationConditionsException e) {
-        log.error(e.getMessage());
-        return ResponseEntity
-                .status(HttpStatus.CONFLICT)
-                .body(ApiError.builder()
-                        .status(HttpStatus.CONFLICT)
-                        .reason("For the requested operation the conditions are not met")
-                        .message(e.getMessage())
-                        .timestamp(DateTimeFormatter.ofPattern(PATTERN).format(LocalDateTime.now()))
-                        .build());
-    }
-
-
     @ExceptionHandler(EventValidateException.class)
     public ResponseEntity<ApiError> eventValidateException(EventValidateException e) {
         log.error(e.getMessage());
@@ -127,5 +97,33 @@ public class ErrorHandler {
                         .timestamp(DateTimeFormatter.ofPattern(PATTERN).format(LocalDateTime.now()))
                         .build());
     }
+
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public ResponseEntity<List<ApiError>> notValidException(MethodArgumentNotValidException e) {
+        log.error(e.getMessage());
+        final List<ApiError> violations = e.getBindingResult().getFieldErrors().stream()
+                .map(error -> ApiError.builder()
+                        .message(error.getDefaultMessage())
+                        .status(HttpStatus.BAD_REQUEST)
+                        .timestamp(DateTimeFormatter.ofPattern(PATTERN).format(LocalDateTime.now()))
+                        .reason(error.getField())
+                        .build())
+                .collect(Collectors.toList());
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(violations);
+    }
+
+    @ExceptionHandler(OperationConditionsException.class)
+    public ResponseEntity<ApiError> operationConditionsException(OperationConditionsException e) {
+        log.error(e.getMessage());
+        return ResponseEntity
+                .status(HttpStatus.CONFLICT)
+                .body(ApiError.builder()
+                        .status(HttpStatus.CONFLICT)
+                        .reason("For the requested operation the conditions are not met")
+                        .message(e.getMessage())
+                        .timestamp(DateTimeFormatter.ofPattern(PATTERN).format(LocalDateTime.now()))
+                        .build());
+    }
+
 }
 

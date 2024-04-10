@@ -31,16 +31,16 @@ public class AdminCompilationController {
         return ResponseEntity.status(201).body(compilationService.createCompilation(compilationDto));
     }
 
-    @PatchMapping("/{compId}")
+    @PatchMapping("/{compilationId}")
     public ResponseEntity<CompilationDto> createCompilation(
-            @PathVariable Long compId,
+            @PathVariable Long compilationId,
             @RequestBody @Valid UpdateCompilationRequest updateCompilation) {
-        return ResponseEntity.ok().body(compilationService.updateCompilation(compId, updateCompilation));
+        return ResponseEntity.ok().body(compilationService.updateCompilation(compilationId, updateCompilation));
     }
 
-    @DeleteMapping("/{compId}")
-    public ResponseEntity<Void> deleteCompilation(@PathVariable Long compId) {
-        compilationService.deleteCompilation(compId);
+    @DeleteMapping("/{compilationId}")
+    public ResponseEntity<Void> deleteCompilation(@PathVariable Long compilationId) {
+        compilationService.deleteCompilation(compilationId);
         return ResponseEntity.status(204).build();
     }
 }

@@ -5,10 +5,10 @@ import org.mapstruct.factory.Mappers;
 import ru.practicum.ewm.server.models.category.Category;
 import ru.practicum.ewm.server.models.category.CategoryDto;
 
-@Mapper
-public interface CategoryMapper {
+import static org.mapstruct.MappingConstants.ComponentModel.SPRING;
 
-    CategoryMapper INSTANCE = Mappers.getMapper(CategoryMapper.class);
+@Mapper(componentModel = SPRING)
+public interface CategoryMapper {
 
     Category toCategory(CategoryDto categoryDto);
 }

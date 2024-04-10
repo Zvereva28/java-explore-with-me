@@ -24,11 +24,12 @@ public class CategoriesServiceImpl implements CategoriesService {
 
     private final CategoryRepository categoriesRepository;
     private final EventRepository eventRepository;
+    private final CategoryMapper categoryMapper;
 
     @Override
     @Transactional
     public Category createCategory(CategoryDto newCategory) {
-        Category category = categoriesRepository.save(CategoryMapper.INSTANCE.toCategory(newCategory));
+        Category category = categoriesRepository.save(categoryMapper.toCategory(newCategory));
         log.info("Создана новая категория - {}", newCategory);
         return category;
     }

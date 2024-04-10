@@ -22,7 +22,7 @@ public class EventDto {
     @Size(min = 3, max = 120)
     private String title;
 
-    @NotBlank
+    @NotBlank(message = "Не может быть пустым")
     @Size(min = 20, max = 2000)
     private String annotation;
 
@@ -34,7 +34,7 @@ public class EventDto {
     @NotBlank(groups = Marker.OnCreate.class)
     private String eventDate;
 
-    @NotBlank
+    @NotBlank(message = "Не может быть пустым")
     @Size(min = 20, max = 7000)
     private String description;
 

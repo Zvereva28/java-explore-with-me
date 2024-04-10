@@ -18,6 +18,8 @@ public interface RequestRepository extends JpaRepository<ParticipationRequest, L
 
     List<ParticipationRequest> findAllByEvent(Long event);
 
+    List<ParticipationRequest> findAllByStatusOrderByIdDesc(RequestStatus status);
+
     @Query(value = "select * " +
             "from participation_requests pr " +
             "where id IN (:ids) " +
@@ -25,6 +27,6 @@ public interface RequestRepository extends JpaRepository<ParticipationRequest, L
             nativeQuery = true)
     List<ParticipationRequest> findAllByIds(@Param("ids") List<Long> ids);
 
-    List<ParticipationRequest> findAllByStatusOrderByIdDesc(RequestStatus status);
+
 
 }

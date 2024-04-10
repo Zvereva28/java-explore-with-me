@@ -6,10 +6,10 @@ import ru.practicum.ewm.server.models.user.User;
 import ru.practicum.ewm.server.models.user.UserDto;
 import ru.practicum.ewm.server.models.user.UserShort;
 
-@Mapper
-public interface UserMapper {
+import static org.mapstruct.MappingConstants.ComponentModel.SPRING;
 
-    UserMapper INSTANCE = Mappers.getMapper(UserMapper.class);
+@Mapper(componentModel = SPRING)
+public interface UserMapper {
 
     User toUser(UserDto userDto);
 

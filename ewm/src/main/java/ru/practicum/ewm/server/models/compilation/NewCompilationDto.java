@@ -17,7 +17,7 @@ public class NewCompilationDto {
 
     private Boolean pinned;
 
-    @NotBlank
+    @NotBlank(message = "Не может быть пустым")
     @Size(min = 1, max = 50)
     private String title;
 

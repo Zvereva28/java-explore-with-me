@@ -22,6 +22,7 @@ import java.util.List;
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
+    private final UserMapper userMapper;
 
     @Override
     public List<User> getUsers(List<Long> ids, Integer from, Integer size) {
@@ -39,7 +40,7 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional
     public User createUser(UserDto userDto) {
-        User user = userRepository.save(UserMapper.INSTANCE.toUser(userDto));
+        User user = userRepository.save(userMapper.toUser(userDto));
 
         log.info("Создан пользователь - {}", user);
         return user;

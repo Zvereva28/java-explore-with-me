@@ -32,6 +32,7 @@ public class RequestsServiceImpl implements RequestsService {
     private final RequestRepository requestRepository;
     private final EventRepository eventRepository;
     private final UserRepository userRepository;
+    private final RequestMapper requestMapper;
 
     @Override
     @Transactional
@@ -50,7 +51,7 @@ public class RequestsServiceImpl implements RequestsService {
         requestRepository.save(request);
 
         log.info("Запрос пользователем с id={} на участие в событии с id={} создан", userId, eventId);
-        return RequestMapper.INSTANCE.toRequestDto(request);
+        return requestMapper.toRequestDto(request);
     }
 
     @Override
@@ -59,7 +60,7 @@ public class RequestsServiceImpl implements RequestsService {
         List<ParticipationRequest> requests = requestRepository.findAllByRequester(userId);
 
         log.info("Получен список запросов пользователя с id={}", userId);
-        return requests.stream().map(RequestMapper.INSTANCE::toRequestDto).collect(Collectors.toList());
+        return requests.stream().map(requestMapper::toRequestDto).collect(Collectors.toList());
     }
 
     @Override
@@ -70,7 +71,7 @@ public class RequestsServiceImpl implements RequestsService {
         request.setStatus(RequestStatus.CANCELED);
 
         log.info("Запрос пользователем с id={} на участие в событии с id={} отменен", userId, request.getEvent());
-        return RequestMapper.INSTANCE.toRequestDto(request);
+        return requestMapper.toRequestDto(request);
     }
 
     private Event getEventByIdOrElseThrow(Long id) {

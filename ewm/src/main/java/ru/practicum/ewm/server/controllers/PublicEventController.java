@@ -23,9 +23,9 @@ import java.util.Map;
 public class PublicEventController {
     private final EventService eventService;
 
-    @GetMapping("/{id}")
-    public ResponseEntity<EventFullDto> getEvent(@PathVariable Long id, HttpServletRequest request) {
-        return ResponseEntity.ok().body(eventService.getPublicEvent(id, request));
+    @GetMapping("/{eventId}")
+    public ResponseEntity<EventFullDto> getEvent(@PathVariable Long eventId, HttpServletRequest request) {
+        return ResponseEntity.ok().body(eventService.getPublicEvent(eventId, request));
     }
 
     @GetMapping

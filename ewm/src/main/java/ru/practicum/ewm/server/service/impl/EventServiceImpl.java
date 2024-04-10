@@ -69,6 +69,9 @@ public class EventServiceImpl implements EventService {
     private final RequestRepository requestRepository;
     private final StatsClient client;
     private final SearchSpecificationBuilder specificationBuilder;
+    private final EventMapper eventMapper;
+    private final LocationMapper locationMapper;
+    private final RequestMapper requestMapper;
 
 
     @Override
@@ -78,14 +81,14 @@ public class EventServiceImpl implements EventService {
         User user = getUserByIdOrElseThrow(userId);
         Category category = getCategoryByIdOrElseThrow(eventDto.getCategory());
         eventUpdateDateValidated(eventDto.getEventDate());
-        Location location = locationRepository.save(LocationMapper.INSTANCE.toLocation(eventDto.getLocation()));
-        Event event = eventRepository.save(EventMapper.INSTANCE.dtoToEvent(eventDto));
+        Location location = locationRepository.save(locationMapper.toLocation(eventDto.getLocation()));
+        Event event = eventRepository.save(eventMapper.dtoToEvent(eventDto));
         event.setInitiator(user);
         event.setLocation(location);
         event.setCategory(category);
 
         log.info("Создано новое событие - {}", event.getTitle());
-        return EventMapper.INSTANCE.toEventFullDto(event);
+        return eventMapper.toEventFullDto(event);
     }
 
     @Override
@@ -96,7 +99,7 @@ public class EventServiceImpl implements EventService {
 
         log.info("Получен список событий добавленных пользователем - {}", user);
         return events.stream()
-                .map(EventMapper.INSTANCE::toEventShort)
+                .map(eventMapper::toEventShort)
                 .collect(Collectors.toList());
     }
 
@@ -106,7 +109,7 @@ public class EventServiceImpl implements EventService {
         Event event = getEventByIdOrElseThrow(eventId);
 
         log.info("Получена полная информация о событии - {}, добавленных пользователем - {}", event.getTitle(), user);
-        return EventMapper.INSTANCE.toEventFullDto(event);
+        return eventMapper.toEventFullDto(event);
     }
 
     @Override
@@ -129,7 +132,7 @@ public class EventServiceImpl implements EventService {
             Event updatedEvent = updatingEventByUserWithDto(event, eventDto);
 
             log.info("Событие с id={} изменено пользователем с id={}", eventId, user.getId());
-            return EventMapper.INSTANCE.toEventFullDto(updatedEvent);
+            return eventMapper.toEventFullDto(updatedEvent);
         } else {
             throw new ConflictException(String.format("Event with id=%d has been published", eventId));
         }
@@ -149,7 +152,7 @@ public class EventServiceImpl implements EventService {
             Event updatedEvent = updatingEventByAdminWithDto(event, eventDto);
 
             log.info("Событие с id={} изменено админом", eventId);
-            return EventMapper.INSTANCE.toEventFullDto(updatedEvent);
+            return eventMapper.toEventFullDto(updatedEvent);
         } else {
             throw new ConflictException(String.format("Event with id=%d has been published", eventId));
         }
@@ -166,7 +169,7 @@ public class EventServiceImpl implements EventService {
                 .orElseThrow(() -> new BadRequestException("Incorrectly made request")), pageable).toList();
 
         log.info("Админом получен список событий по заданным параметрам о событии");
-        return events.stream().map(EventMapper.INSTANCE::toEventFullDto).collect(Collectors.toList());
+        return events.stream().map(eventMapper::toEventFullDto).collect(Collectors.toList());
     }
 
     @Override
@@ -176,7 +179,7 @@ public class EventServiceImpl implements EventService {
         List<ParticipationRequest> requests = requestRepository.findAllByEvent(eventId);
 
         log.info("Пользователь с id={} получил список запросов на участие в событии с id={}", userId, eventId);
-        return requests.stream().map(RequestMapper.INSTANCE::toRequestDto).collect(Collectors.toList());
+        return requests.stream().map(requestMapper::toRequestDto).collect(Collectors.toList());
     }
 
     @Override
@@ -220,9 +223,9 @@ public class EventServiceImpl implements EventService {
         List<ParticipationRequest> confirmedRequests = requestRepository.findAllByStatusOrderByIdDesc(RequestStatus.CONFIRMED);
         List<ParticipationRequest> rejectedRequests = requestRepository.findAllByStatusOrderByIdDesc(RequestStatus.REJECTED);
         updateResult.setConfirmedRequests(confirmedRequests.stream()
-                .map(RequestMapper.INSTANCE::toRequestDto).collect(Collectors.toList()));
+                .map(requestMapper::toRequestDto).collect(Collectors.toList()));
         updateResult.setRejectedRequests(rejectedRequests
-                .stream().map(RequestMapper.INSTANCE::toRequestDto).collect(Collectors.toList()));
+                .stream().map(requestMapper::toRequestDto).collect(Collectors.toList()));
 
         log.info("Заявка на участие в событии с id={} изменена", eventId);
         return updateResult;
@@ -243,7 +246,7 @@ public class EventServiceImpl implements EventService {
         }
 
         log.info("Просмотрена полная информация о событии с id={}", id);
-        return EventMapper.INSTANCE.toEventFullDto(event);
+        return eventMapper.toEventFullDto(event);
     }
 
     @SneakyThrows
@@ -276,7 +279,7 @@ public class EventServiceImpl implements EventService {
         createHit(request);
 
         log.info("Получен публичный список событий по заданным параметрам о событии");
-        return events.stream().map(EventMapper.INSTANCE::toEventShort).collect(Collectors.toList());
+        return events.stream().map(eventMapper::toEventShort).collect(Collectors.toList());
 
     }
 
@@ -319,7 +322,7 @@ public class EventServiceImpl implements EventService {
     private Event updatingEventByUserWithDto(Event event, UpdateEventUserRequest dto) {
 
         if (dto.getStateAction() == null) {
-            EventMapper.INSTANCE.eventUserUpdate(dto, event);
+            eventMapper.eventUserUpdate(dto, event);
 
         } else if (dto.getStateAction().equals(StateAction.CANCEL_REVIEW)) {
             event.setState(EventState.CANCELED);
@@ -334,7 +337,7 @@ public class EventServiceImpl implements EventService {
 
         if (dto.getStateAction() == null) {
 
-            EventMapper.INSTANCE.eventAdminUpdate(dto, event);
+            eventMapper.eventAdminUpdate(dto, event);
             if (dto.getCategory() != null) {
                 event.setCategory(getCategoryByIdOrElseThrow(dto.getCategory()));
             }
@@ -349,7 +352,7 @@ public class EventServiceImpl implements EventService {
                 throw new ConflictException("Cannot publish the event because " +
                         "it's not in the right state: PENDING");
             }
-            EventMapper.INSTANCE.eventAdminUpdate(dto, event);
+            eventMapper.eventAdminUpdate(dto, event);
             if (dto.getCategory() != null) {
                 event.setCategory(getCategoryByIdOrElseThrow(dto.getCategory()));
             }

@@ -21,9 +21,9 @@ public class PublicCategoriesController {
 
     private final CategoriesService service;
 
-    @GetMapping("/{catId}")
-    public ResponseEntity<Category> getCategory(@PathVariable Long catId) {
-        return ResponseEntity.ok().body(service.getCategory(catId));
+    @GetMapping("/{categoriesId}")
+    public ResponseEntity<Category> getCategory(@PathVariable Long categoriesId) {
+        return ResponseEntity.ok().body(service.getCategory(categoriesId));
     }
 
     @GetMapping

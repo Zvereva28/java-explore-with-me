@@ -6,6 +6,7 @@ import ru.practicum.ewm.server.models.category.CategoryDto;
 import java.util.List;
 
 public interface CategoriesService {
+
     Category createCategory(CategoryDto newCategory);
 
     Category updateCategory(Long catId, CategoryDto category);

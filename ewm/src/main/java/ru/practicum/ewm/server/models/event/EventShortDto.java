@@ -17,24 +17,24 @@ public class EventShortDto {
 
     private Long id;
 
-    @NotBlank
+    @NotBlank(message = "Не может быть пустым")
     private String title;
 
-    @NotBlank
+    @NotBlank(message = "Не может быть пустым")
     private String annotation;
 
-    @NotBlank
+    @NotBlank(message = "Не может быть пустым")
     private Category category;
 
-    @NotBlank
+    @NotBlank(message = "Не может быть пустым")
     private Boolean paid;
 
-    @NotBlank
+    @NotBlank(message = "Не может быть пустым")
     private String eventDate;
 
     private Integer confirmedRequests;
 
-    @NotBlank
+    @NotBlank(message = "Не может быть пустым")
     private UserShort initiator;
 
     private Integer views;

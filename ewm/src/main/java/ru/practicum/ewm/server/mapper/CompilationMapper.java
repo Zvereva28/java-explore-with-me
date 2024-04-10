@@ -10,11 +10,10 @@ import ru.practicum.ewm.server.models.compilation.Compilation;
 import ru.practicum.ewm.server.models.compilation.CompilationDto;
 import ru.practicum.ewm.server.models.compilation.NewCompilationDto;
 
-@Mapper
+import static org.mapstruct.MappingConstants.ComponentModel.SPRING;
+
+@Mapper(componentModel = SPRING)
 public interface CompilationMapper {
-    CompilationMapper INSTANCE = Mappers.getMapper(CompilationMapper.class);
-
-
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE,
             nullValueCheckStrategy = NullValueCheckStrategy.ALWAYS)
     Compilation newCompilationToCompilation(NewCompilationDto dto);

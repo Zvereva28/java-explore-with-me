@@ -15,10 +15,10 @@ import ru.practicum.ewm.server.models.event.EventShortDto;
 import ru.practicum.ewm.server.models.event.UpdateEventAdminRequest;
 import ru.practicum.ewm.server.models.event.UpdateEventUserRequest;
 
-@Mapper
-public interface EventMapper {
+import static org.mapstruct.MappingConstants.ComponentModel.SPRING;
 
-    EventMapper INSTANCE = Mappers.getMapper(EventMapper.class);
+@Mapper(componentModel = SPRING)
+public interface EventMapper {
 
     @Mapping(target = "eventDate", dateFormat = "yyyy-MM-dd HH:mm:ss")
     Event dtoToEvent(EventDto eventDto);

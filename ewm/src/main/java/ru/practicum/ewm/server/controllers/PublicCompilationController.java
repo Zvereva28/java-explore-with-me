@@ -20,9 +20,9 @@ import java.util.List;
 public class PublicCompilationController {
     private final CompilationService compilationService;
 
-    @GetMapping("/{compId}")
-    public ResponseEntity<CompilationDto> getCompilation(@PathVariable Long compId) {
-        return ResponseEntity.ok().body(compilationService.getCompilation(compId));
+    @GetMapping("/{compilationId}")
+    public ResponseEntity<CompilationDto> getCompilation(@PathVariable Long compilationId) {
+        return ResponseEntity.ok().body(compilationService.getCompilation(compilationId));
     }
 
     @GetMapping
