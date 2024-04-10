@@ -27,6 +27,4 @@ public interface RequestRepository extends JpaRepository<ParticipationRequest, L
             nativeQuery = true)
     List<ParticipationRequest> findAllByIds(@Param("ids") List<Long> ids);
 
-
-
 }

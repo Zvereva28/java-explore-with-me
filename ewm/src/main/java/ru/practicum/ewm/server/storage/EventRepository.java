@@ -24,6 +24,4 @@ public interface EventRepository extends JpaRepository<Event, Long>, JpaSpecific
 
     Event findFirstByCategoryId(Long categoryId);
 
-
-
 }

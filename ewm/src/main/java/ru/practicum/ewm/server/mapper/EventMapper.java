@@ -6,7 +6,6 @@ import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
 import org.mapstruct.NullValueCheckStrategy;
 import org.mapstruct.NullValuePropertyMappingStrategy;
-import org.mapstruct.factory.Mappers;
 import ru.practicum.ewm.server.models.category.Category;
 import ru.practicum.ewm.server.models.event.Event;
 import ru.practicum.ewm.server.models.event.EventDto;
@@ -44,4 +43,5 @@ public interface EventMapper {
 
     @Mapping(target = "eventDate", expression = "java(DateTimeFormatter.ofPattern(\"yyyy-MM-dd HH:mm:ss\").format(event.getEventDate()))")
     EventShortDto toEventShort(Event event);
+
 }
