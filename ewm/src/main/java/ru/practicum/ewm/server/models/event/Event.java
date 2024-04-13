@@ -39,6 +39,7 @@ public class Event {
     @Column(name = "annotation", nullable = false)
     private String annotation;
 
+    @ManyToOne()
     @JoinColumn(name = "category_id")
     private Category category;
 
