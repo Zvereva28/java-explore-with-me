@@ -10,4 +10,6 @@ import static org.mapstruct.MappingConstants.ComponentModel.SPRING;
 public interface CategoryMapper {
 
     Category toCategory(CategoryDto categoryDto);
+
+    CategoryDto toCategoryDto(Category category);
 }

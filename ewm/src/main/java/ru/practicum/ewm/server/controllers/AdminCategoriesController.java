@@ -26,12 +26,12 @@ public class AdminCategoriesController {
     private final CategoriesService categoriesService;
 
     @PostMapping
-    public ResponseEntity<Category> createCategory(@RequestBody @Valid CategoryDto category) {
+    public ResponseEntity<CategoryDto> createCategory(@RequestBody @Valid CategoryDto category) {
         return ResponseEntity.status(201).body(categoriesService.createCategory(category));
     }
 
     @PatchMapping("/{categoryId}")
-    public ResponseEntity<Category> updateCategory(
+    public ResponseEntity<CategoryDto> updateCategory(
             @RequestBody @Valid CategoryDto category,
             @PathVariable Long categoryId) {
         return ResponseEntity.ok().body(categoriesService.updateCategory(categoryId, category));
