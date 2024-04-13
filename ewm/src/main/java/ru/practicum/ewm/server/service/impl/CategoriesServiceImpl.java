@@ -15,6 +15,7 @@ import ru.practicum.ewm.server.storage.CategoryRepository;
 import ru.practicum.ewm.server.storage.EventRepository;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -35,10 +36,10 @@ public class CategoriesServiceImpl implements CategoriesService {
     }
 
     @Override
-    public Category getCategory(Long catId) {
+    public CategoryDto getCategory(Long catId) {
         Category category = findCategoryByIdOrElseThrow(catId);
         log.info("Получена категория {}", category);
-        return category;
+        return categoryMapper.toCategoryDto(category);
     }
 
     @Override
@@ -64,9 +65,10 @@ public class CategoriesServiceImpl implements CategoriesService {
     }
 
     @Override
-    public List<Category> getAllCategories(Integer from, Integer size) {
+    public List<CategoryDto> getAllCategories(Integer from, Integer size) {
         log.info("Получен список категорий");
-        return categoriesRepository.findAll(PageRequest.of(from, size)).toList();
+        List<Category> categories = categoriesRepository.findAll(PageRequest.of(from, size)).toList();
+        return categories.stream().map(categoryMapper::toCategoryDto).collect(Collectors.toList());
     }
 
     private Category findCategoryByIdOrElseThrow(Long id) {

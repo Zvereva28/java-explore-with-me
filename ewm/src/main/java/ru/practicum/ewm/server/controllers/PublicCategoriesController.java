@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import ru.practicum.ewm.server.models.category.Category;
+import ru.practicum.ewm.server.models.category.CategoryDto;
 import ru.practicum.ewm.server.service.CategoriesService;
 
 import javax.validation.constraints.Max;
@@ -22,12 +23,12 @@ public class PublicCategoriesController {
     private final CategoriesService service;
 
     @GetMapping("/{categoriesId}")
-    public ResponseEntity<Category> getCategory(@PathVariable Long categoriesId) {
+    public ResponseEntity<CategoryDto> getCategory(@PathVariable Long categoriesId) {
         return ResponseEntity.ok().body(service.getCategory(categoriesId));
     }
 
     @GetMapping
-    public ResponseEntity<List<Category>> getCategories(
+    public ResponseEntity<List<CategoryDto>> getCategories(
             @RequestParam(name = "from", defaultValue = "0") @Min(0) Integer from,
             @RequestParam(name = "size", defaultValue = "10") @Min(1) @Max(100) Integer size) {
         return ResponseEntity.ok().body(service.getAllCategories(from, size));
