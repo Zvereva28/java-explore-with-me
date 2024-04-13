@@ -51,6 +51,7 @@ public class CategoriesServiceImpl implements CategoriesService {
     }
 
     @Override
+    @Transactional
     public void deleteCategory(Long catId) {
         findCategoryByIdOrElseThrow(catId);
         if (eventRepository.findFirstByCategoryId(catId) != null) {
