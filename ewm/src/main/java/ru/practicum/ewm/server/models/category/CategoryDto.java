@@ -16,6 +16,8 @@ import javax.validation.constraints.Size;
 @AllArgsConstructor
 public class CategoryDto {
 
+    private Long id;
+
     @NotBlank(message = "Не может быть пустым")
     @Size(min = 1, max = 50)
     private String name;
