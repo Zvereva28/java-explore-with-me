@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import ru.practicum.ewm.server.models.user.User;
 import ru.practicum.ewm.server.models.user.UserDto;
 import ru.practicum.ewm.server.service.UserService;
 
@@ -28,7 +27,7 @@ public class AdminUsersController {
     private final UserService userService;
 
     @PostMapping
-    public ResponseEntity<User> createUser(@RequestBody @Valid UserDto userDto) {
+    public ResponseEntity<UserDto> createUser(@RequestBody @Valid UserDto userDto) {
         return ResponseEntity.status(201).body(userService.createUser(userDto));
     }
 
@@ -39,7 +38,7 @@ public class AdminUsersController {
     }
 
     @GetMapping
-    public ResponseEntity<List<User>> getUsers(
+    public ResponseEntity<List<UserDto>> getUsers(
             @RequestParam(name = "ids", required = false) List<Long> ids,
             @RequestParam(name = "from", defaultValue = "0", required = false) @Min(0) Integer from,
             @RequestParam(name = "size", defaultValue = "10", required = false) @Min(1) Integer size) {

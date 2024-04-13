@@ -14,6 +14,7 @@ import ru.practicum.ewm.server.service.UserService;
 import ru.practicum.ewm.server.storage.UserRepository;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -25,25 +26,27 @@ public class UserServiceImpl implements UserService {
     private final UserMapper userMapper;
 
     @Override
-    public List<User> getUsers(List<Long> ids, Integer from, Integer size) {
+    public List<UserDto> getUsers(List<Long> ids, Integer from, Integer size) {
         if (ids == null) {
             log.info("Получен список пользователей");
-            return userRepository.findAll(PageRequest.of(from, size)).toList();
+            List<User> users = userRepository.findAll(PageRequest.of(from, size)).toList();
+            return users.stream().map(userMapper::toUserDto).collect(Collectors.toList());
         } else {
             Pageable pageable = PageRequest.of(from, size);
 
             log.info("Получен список пользователей с id={}", ids);
-            return userRepository.findAllByIdAndPage(ids, pageable).toList();
+            List<User> users = userRepository.findAllByIdAndPage(ids, pageable).toList();
+            return users.stream().map(userMapper::toUserDto).collect(Collectors.toList());
         }
     }
 
     @Override
     @Transactional
-    public User createUser(UserDto userDto) {
+    public UserDto createUser(UserDto userDto) {
         User user = userRepository.save(userMapper.toUser(userDto));
 
         log.info("Создан пользователь - {}", user);
-        return user;
+        return userMapper.toUserDto(user);
     }
 
     @Override

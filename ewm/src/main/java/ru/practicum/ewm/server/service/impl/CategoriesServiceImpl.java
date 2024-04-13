@@ -28,7 +28,6 @@ public class CategoriesServiceImpl implements CategoriesService {
     private final CategoryMapper categoryMapper;
 
     @Override
-    @Transactional
     public CategoryDto createCategory(CategoryDto newCategory) {
         CategoryDto category = categoryMapper.toCategoryDto(categoriesRepository.save(categoryMapper.toCategory(newCategory)));
         log.info("Создана новая категория - {}", newCategory);
@@ -43,7 +42,6 @@ public class CategoriesServiceImpl implements CategoriesService {
     }
 
     @Override
-    @Transactional
     public CategoryDto updateCategory(Long catId, CategoryDto newCategory) {
         Category category = findCategoryByIdOrElseThrow(catId);
         category.setName(newCategory.getName());
@@ -53,7 +51,6 @@ public class CategoriesServiceImpl implements CategoriesService {
     }
 
     @Override
-    @Transactional
     public void deleteCategory(Long catId) {
         findCategoryByIdOrElseThrow(catId);
         if (eventRepository.findFirstByCategoryId(catId) != null) {

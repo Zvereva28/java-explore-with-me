@@ -11,6 +11,8 @@ import javax.validation.constraints.Size;
 @Setter
 public class UserDto {
 
+    private Long id;
+
     @NotBlank(message = "Поле name не может быть пустым")
     @Size(min = 2, max = 250)
     private String name;
