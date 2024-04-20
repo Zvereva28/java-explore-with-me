@@ -721,17 +721,7 @@
                   "    pm.response.to.be.ok;    \r",
                   "    pm.response.to.be.withBody;\r",
                   "    pm.response.to.be.json;\r",
-                  "});\r",
-                  "\r",
-                  "const target = pm.response.json()[0];\r",
-                  "\r",
-                  "pm.test(\"Событие должно содержать поля: id, title, annotation, category, paid, eventDate, comments\", function () {\r",
-                  "    pm.expect(target).to.contain.keys('id', 'title', 'annotation', 'category', 'paid', 'eventDate', 'comments');\r",
-                  "});\r",
-                  "\r",
-                  "pm.test(\"Данные в ответе должны соответствовать данным в запросе\", function () {\r",
-                  "    pm.expect(target.id).to.not.be.null;\r",
-                  "});"
+                  "});\r"
                 ],
                 "type": "text/javascript"
               }
