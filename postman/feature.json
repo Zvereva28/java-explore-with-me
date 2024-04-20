@@ -604,12 +604,7 @@
                   "pm.test(\"Ответ должен содержать код статуса 201 и данные в формате json\", function () {\r",
                   "    pm.response.to.have.status(201);\r",
                   "    pm.response.to.be.json;\r",
-                  "});\r",
-                  "\r",
-                  "const source = JSON.parse(pm.request.body.raw);\r",
-                  "const target = pm.response.json();\r",
-                  "    pm.expect(target.id).to.not.be.null;\r",
-                  "});"
+                  "});\r"
                 ],
                 "type": "text/javascript"
               }
@@ -820,11 +815,7 @@
                   "pm.test(\"Ответ должен содержать код статуса 200 и данные в формате json\", function () {\r",
                   "    pm.response.to.be.ok;    \r",
                   "    pm.response.to.be.json;\r",
-                  "});\r",
-                  "\r",
-                  "const source = pm.collectionVariables.get('response');\r",
-                  "const target = pm.response.json();\r",
-                  "});"
+                  "});\r"
                 ],
                 "type": "text/javascript"
               }
@@ -946,11 +937,7 @@
                   "pm.test(\"Ответ должен содержать код статуса 200 и данные в формате json\", function () {\r",
                   "    pm.response.to.be.ok;    \r",
                   "    pm.response.to.be.json;\r",
-                  "});\r",
-                  "\r",
-                  "const source = pm.collectionVariables.get('response');\r",
-                  "const target = pm.response.json();\r",
-                  "});"
+                  "});\r"
                 ],
                 "type": "text/javascript"
               }
@@ -1058,9 +1045,7 @@
                 "exec": [
                   "pm.test(\"Ответ должен содержать код статуса 204\", function () {\r",
                   "    pm.response.to.have.status(204);\r",
-                  "});\r",
-                  "\r",
-                  ""
+                  "});\r"
                 ],
                 "type": "text/javascript"
               }
@@ -1153,8 +1138,7 @@
                 "exec": [
                   "pm.test(\"Ответ должен содержать код статуса 204\", function () {\r",
                   "    pm.response.to.have.status(204);\r",
-                  "});\r",
-                  ""
+                  "});\r"
                 ],
                 "type": "text/javascript"
               }
@@ -1245,8 +1229,8 @@
                   "pm.test(\"Ответ должен содержать код статуса 200 и данные в формате json\", function () {\r",
                   "    pm.response.to.be.ok;    \r",
                   "    pm.response.to.be.json;\r",
-                  "});\r",
-                  "});"
+                  "});\r"
+
                 ],
                 "type": "text/javascript"
               }
@@ -1337,9 +1321,7 @@
                   "pm.test(\"Ответ должен содержать код статуса 200 и данные в формате json\", function () {\r",
                   "    pm.response.to.be.ok;    \r",
                   "    pm.response.to.be.json;\r",
-                  "});\r",
-                  "\r",
-                  "});"
+                  "});\r"
                 ],
                 "type": "text/javascript"
               }
@@ -1420,9 +1402,7 @@
                   "pm.test(\"Ответ должен содержать код статуса 200 и данные в формате json\", function () {\r",
                   "    pm.response.to.be.ok;    \r",
                   "    pm.response.to.be.json;\r",
-                  "});\r",
-                  "\r",
-                  "});"
+                  "});\r"
                 ],
                 "type": "text/javascript"
               }
@@ -1505,9 +1485,7 @@
                   "pm.test(\"Ответ должен содержать код статуса 200 и данные в формате json\", function () {\r",
                   "    pm.response.to.be.ok;    \r",
                   "    pm.response.to.be.json;\r",
-                  "});\r",
-                  "\r",
-                  "});"
+                  "});\r"
                 ],
                 "type": "text/javascript"
               }
