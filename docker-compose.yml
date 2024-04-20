@@ -25,7 +25,7 @@ services:
     volumes:
       - ./data:/data/stats-db
 
-  ewm:
+  ewm-service:
     build: ewm
     image: ewm-service-image
     container_name: ewm-service-container
