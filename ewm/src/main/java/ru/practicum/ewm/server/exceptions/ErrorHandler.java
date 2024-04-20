@@ -125,5 +125,18 @@ public class ErrorHandler {
                         .build());
     }
 
+    @ExceptionHandler(ForbiddenException.class)
+    public ResponseEntity<ApiError> forbiddenException(ForbiddenException e) {
+        log.error(e.getMessage());
+        return ResponseEntity
+                .status(HttpStatus.FORBIDDEN)
+                .body(ApiError.builder()
+                        .status(HttpStatus.FORBIDDEN)
+                        .reason("No access rights to content")
+                        .message(e.getMessage())
+                        .timestamp(DateTimeFormatter.ofPattern(PATTERN).format(LocalDateTime.now()))
+                        .build());
+    }
+
 }
 
